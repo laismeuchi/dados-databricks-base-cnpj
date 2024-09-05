@@ -40,6 +40,22 @@ Após a finalização, é criado um painel no Power BI que conecta na camada *go
 
 # Fontes
 
+As fontes de dados desse projeto está disponível no [Portal de Dados Abertos do Governo Federal](https://dados.gov.br/dados/conjuntos-dados/cadastro-nacional-da-pessoa-juridica---cnpj).
+Os arquivos são disponibilizados mensalmente no [link](https://dadosabertos.rfb.gov.br/CNPJ/dados_abertos_cnpj/) em fromato *csv* compactados em arquivos *zip* .
+Nesse projeto utilizei os seguintes arquivos:
+
+| Arquivos          |
+| -------------     |
+| Municipios        |
+| Cnaes             |
+| Naturezas         |
+| Paises            |
+| Sócios            |
+| Empresas          |
+| Estabelecimentos  |
+
+Os arquivos de Sócios, Empresas e Estabelecimentos são particionados em vários arquivos do mesmo tamanho, tendo que ser tratados para serem carregados na camada *bronze* na mesma tabela.
+
 # Armazenamento
 
 # Ingestão
