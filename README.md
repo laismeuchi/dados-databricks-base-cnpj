@@ -26,11 +26,11 @@ A arquitetura proposta foi baseda nas ferramentas disponíveis na [Azure](https:
 
 Em uma visão geral, a fonte de dados é consumida utilizando o Azure Data Factory que copia os arquivos para Azure Data Lake Storage e faz a descompactação deles no container *landing*.
 
-Esses arquivos são tratados em *notebooks* do Databricks, fazendo a transformação deles para arquivos parquet que são salvos na camada *bronze*.
+O mesmo *pipeline* do Azure Data Factory descompacta esses arquivos os salva em formato *parquet* na camada *bronze*, mantendo os mesmos dados, só alterando o formato.
 
-Na fase seguinte, os dados são tratatos para serem salvos como tabelas na camada *silver* utilizando particionamento para melhor performance.
+Na fase seguinte, os dados são tratatos em *notebooks* do Databricks para serem salvos como tabelas na camada *silver* utilizando particionamento para melhor performance.
 
-Com base nas tabelas silver é possível criar as agregações e visões que atendem os requisitos solicitados pelo usuário na camada *gold*.
+Com base nas tabelas silver é possível criar as agregações e visões que atendem os requisitos solicitados pelo usuário na camada *gold*, também utilizando *notebooks* no Databricks.
 
 Após a finalização, é criado um painel no Power BI que conecta na camada *gold* do Data Lake para apresentar os dados ao usuário.
 
@@ -58,7 +58,26 @@ Os arquivos de Sócios, Empresas e Estabelecimentos são particionados em vário
 
 # Armazenamento
 
+O armazenamento do projeto usa o Data Lake Storage da Azure com os seguintes containers:
+- *configs*: armazena arquivos de configuração para auxiliar nas cargas.
+- *landing*: armazena os arquivos *zip* copiados do site do governo. A divisão de pastas mantem a mesma da origem (Ano-mes).
+- *bronze*: armazena os arquivos *csv* que foram transformados em *parquet* depois da descompactação.A divisão de pastas mantem a mesma da origem (Ano-mes).
+- *silver*: armazena os dados das tabelas gerenciadas da camada *silver*.
+- *gold*: armazena os dados das tabelas gerenciadas da camada *gold*.
+
+
 # Ingestão
+
+Para realizar a ingestão dos dados utilizei o Azure Data Factory e projeto pode ser visualizado nesse [repositório](https://github.com/laismeuchi/dados-adf-base-cnpj).
+Basicamente criei um pipeline com as seguintes atividades:
+1. *set_variable_p_folder*: atividade do tipo *set variable* que atribui o nome da pasta que deve ser consultada no site do governo.
+2. *read_files_metadata*: atividade do tipo *lookup* que faz a leitura de um arquivo *xlsx* que indica quais arquivos devem ser lidos da pasta no site do governo.
+3. *filter_actives*: atividade do tipo *filter* que filtra somente os arquivos que estiverem indicados com status *active*. Assim eu podia fazer testes facilmente, inativando os arquivos que não queria processar naquele momento.
+4. *ForEach1*: atividade do tipo *for each* que itera sobre os nomes dos arquivos a serem lidos, executando as seguintes atividades para cada arquivo:
+    - *copy_http_to_landing*: atividade do tipo *copy data* que copia o arquivo do site do governo para o conateiner *landing* no Azure Data Lake Storage.
+    - *unzip_files*: atividade do tipo *copy data* que copia o arquivo *zip*, descompacta ele e salva como *parquet* no container *bronze* no Azure Data Lake Storage.
+
+Posteriomente, pode ser adicionado um novo pipeline a esse projeto que faz a consulta das pastas disponíveis no site do governo, verifica quais ainda não foram importadas para o Data Lake e faz a importação automaticamente conforme agendamento.
 
 # Transformação
 
