@@ -1,7 +1,11 @@
 # Tratamento da base de CNPJ's da Receita Federal
 Olá!
 
-Esse é um projeto que criei utilizandoa base de CNPJ disponibilizada pela da Receita Federal [aqui](https://dados.gov.br/dados/conjuntos-dados/cadastro-nacional-da-pessoa-juridica---cnpj).
+Nesse projeto proponho uma solução de engenharia de dados realizando o processamento da base de CNPJ's das empresas do Brasil disponibilizada pela [Receita Federal](https://dados.gov.br/dados/conjuntos-dados/cadastro-nacional-da-pessoa-juridica---cnpj) para atender a demanda de um usuário final que deseje avaliar alguns aspectos referentes à esses dados.
+
+Nas seções abaixo apresento mais detalhes dos requisitos e as soluções utilizadas.
+
+# Requisitos
 
 No desenvolvimento segui a premissa de que o usuário final precisaria das seguintes análises:
 
@@ -16,3 +20,16 @@ No desenvolvimento segui a premissa de que o usuário final precisaria das segui
 
 A partir desses requisitos, segui para a ciação da arquitetura do projeto.
 
+# Arquitetura
+
+# Fontes
+
+# Ingestão
+
+# Transformação
+
+# Visualização
+
+# Análise dos Dados
+
+# Custo
