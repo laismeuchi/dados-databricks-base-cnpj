@@ -16,7 +16,7 @@ Para o desenvolvimento segui a seguinte lista de requisitos que o usuário final
     - Quantas empresas foram fechadas
     - Quantas empresas foram supensas
 
-3. Qual o movimento de migração de empresas entre cidades/estado, ou seja, de qual cidade/estado as empresas saeem e para qual se mudam?
+3. Qual o movimento de migração de empresas entre cidades/estado, ou seja, de qual cidade/estado as empresas saem e para qual cidade/estado se mudam?
 
 A partir desses requisitos, segui para a ciação da arquitetura do projeto.
 
