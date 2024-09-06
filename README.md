@@ -81,6 +81,9 @@ Posteriomente, pode ser adicionado um novo pipeline a esse projeto que faz a con
 
 # Transformação
 
+As transformações foram feitas em *noteboobks* no Databricks e foram divididas em duas etapas:
+1. *Bronze* para *Silver*: nessa etapa os dados são carregados da camada *bronze*, são ajustados os nomes das colunas e a tipagem de dados. No caso dos 
+
 # Visualização
 
 # Análise dos Dados
