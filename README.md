@@ -69,7 +69,7 @@ O armazenamento do projeto usa o Data Lake Storage da Azure com os seguintes con
 # Ingestão
 
 Para realizar a ingestão dos dados utilizei o Azure Data Factory e projeto pode ser visualizado nesse [repositório](https://github.com/laismeuchi/dados-adf-base-cnpj).
-Basicamente criei um pipeline com as seguintes atividades:
+Basicamente foi criado um pipeline com as seguintes atividades:
 1. *set_variable_p_folder*: atividade do tipo *set variable* que atribui o nome da pasta que deve ser consultada no site do governo.
 2. *read_files_metadata*: atividade do tipo *lookup* que faz a leitura de um arquivo *xlsx* que indica quais arquivos devem ser lidos da pasta no site do governo.
 3. *filter_actives*: atividade do tipo *filter* que filtra somente os arquivos que estiverem indicados com status *active*. Assim eu podia fazer testes facilmente, inativando os arquivos que não queria processar naquele momento.
@@ -81,8 +81,11 @@ Posteriomente, pode ser adicionado um novo pipeline a esse projeto que faz a con
 
 # Transformação
 
-As transformações foram feitas em *noteboobks* no Databricks e foram divididas em duas etapas:
-1. *Bronze* para *Silver*: nessa etapa os dados são carregados da camada *bronze*, são ajustados os nomes das colunas e a tipagem de dados. No caso dos 
+As transformações foram feitas em *noteboobks* no Databricks e código está nesse repositório para ser consultado.
+Foram divididas em duas etapas:
+1. *Bronze* para *Silver*: nessa etapa os dados são carregados da camada *bronze*, são ajustados os nomes das colunas e a tipagem de dados, e os dados são salvos em uma tabela *Delta*. No caso dos dados que são dividos em vários arquivos, nessa etapa eles são inseridos em uma tabela só, e o mecanismo aproveita essa divisão para particionar a tabela por duas informações: *reference*, que é a pasta do mes da disponibilização, e *file_num*, que é a numeração do arquivo disponibilizado no site do governo.
+2. *Silver* to *Gold*: nessa etapa, os dados das tabelas da camada *silver* são combinados e agregados para atender os requisitos da demanda.
+
 
 # Visualização
 
