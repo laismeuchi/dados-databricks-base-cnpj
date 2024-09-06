@@ -5,9 +5,9 @@ Nesse projeto proponho uma solução de engenharia de dados realizando o process
 
 Nas seções abaixo apresento mais detalhes dos requisitos e as soluções utilizadas.
 
-# Requisitos
+# Demanda
 
-Para o desenvolvimento segui a seguinte lista de requisitos que o usuário final elencou que precisaria para suas análises:
+Para o desenvolvimento segui a seguinte lista de demandas que o usuário final elencou que precisaria para suas análises:
 
 1. Trazer os indicadores listados nos itens 2 e 3, sempre sendo possível avaliar por: cidade, estado, natureza juridica, CNAE, status, porte e faixa etária dos sócios.
 
