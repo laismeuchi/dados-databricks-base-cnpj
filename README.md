@@ -7,9 +7,9 @@ Nas seções abaixo apresento mais detalhes dos requisitos e as soluções utili
 
 # Demanda
 
-Para o desenvolvimento segui a seguinte lista de demandas que o usuário final elencou que precisaria para suas análises:
+Para o desenvolvimento do projeto, considere a seguinte lista de demandas que o usuário final elencou que precisaria para suas análises:
 
-1. Trazer os indicadores listados nos itens 2 e 3, sempre sendo possível avaliar por: cidade, estado, natureza juridica, CNAE, situação cadastral e porte da empresa.
+1. Trazer os indicadores listados nos itens 2 e 3, sempre sendo possível avaliar por: cidade, estado, natureza jurídica, CNAE, situação cadastral e porte da empresa.
 
 2. Alterações dos status das empresas por período:
     - Quantas empresas estão ativas
@@ -20,23 +20,23 @@ Para o desenvolvimento segui a seguinte lista de demandas que o usuário final e
 3. Quantas empresas são abertas por período?
 4. Qual o movimento de migração de empresas entre cidades/estado, ou seja, de qual cidade/estado as empresas saem e para qual cidade/estado se mudam?
 
-A partir desses requisitos, segui para a ciação da arquitetura do projeto.
+A partir desses requisitos, segui para a criação da arquitetura do projeto.
 
 # Arquitetura
 
-A arquitetura proposta foi baseda nas ferramentas disponíveis na [Azure](https://azure.microsoft.com/).
+A arquitetura proposta foi baseada nas ferramentas disponíveis na [Azure](https://azure.microsoft.com/).
 
-Em uma visão geral, a fonte de dados é consumida utilizando o Azure Data Factory em um *pipeline* que copia os arquivos para Azure Data Lake Storage e faz a descompactação deles no container *landing*.
+Em uma visão geral, a fonte de dados é consumida utilizando o [Azure Data Factory](https://azure.microsoft.com/pt-br/products/data-factory) em um *pipeline* que copia os arquivos para Azure Data Lake Storage e faz a descompactação deles no container *landing*.
 
 O mesmo *pipeline* do Azure Data Factory descompacta esses arquivos os salva em formato *parquet* na camada *bronze*, mantendo os mesmos dados, só alterando o formato.
 
-Na fase seguinte, os dados são tratatos em *notebooks* do Databricks para serem salvos como tabelas na camada *silver* utilizando particionamento para melhor performance.
+Na fase seguinte, os dados são tratados em *notebooks* do [Databricks](https://www.databricks.com/) para serem salvos como tabelas na camada *silver* utilizando particionamento para melhor performance.
 
 Com base nas tabelas silver é possível criar as agregações e visões que atendem os requisitos solicitados pelo usuário na camada *gold*, também utilizando *notebooks* no Databricks.
 
 Para realizar a orquestração dos *notebooks* do Databricks, foi criado um pipelines no Azure Data Factory.
 
-Após a finalização, é criado um painel no Power BI que conecta na camada *gold* do Data Lake para apresentar os dados ao usuário.
+Após a finalização, é criado um painel no [Power BI](https://www.microsoft.com/pt-br/power-platform/products/power-bi) que conecta na camada *gold* do Data Lake para apresentar os dados ao usuário.
 
 
 ![image](https://github.com/user-attachments/assets/6e8f9267-5212-40ff-81a1-e862e8ecd734)
@@ -45,7 +45,7 @@ Após a finalização, é criado um painel no Power BI que conecta na camada *go
 # Fontes
 
 As fontes de dados desse projeto está disponível no [Portal de Dados Abertos do Governo Federal](https://dados.gov.br/dados/conjuntos-dados/cadastro-nacional-da-pessoa-juridica---cnpj).
-Os arquivos são disponibilizados mensalmente no [link](https://dadosabertos.rfb.gov.br/CNPJ/dados_abertos_cnpj/) em fromato *csv* compactados em arquivos *zip* .
+Os arquivos são disponibilizados mensalmente no [link](https://dadosabertos.rfb.gov.br/CNPJ/dados_abertos_cnpj/) em formato *csv* compactados em arquivos *zip* .
 Nesse projeto utilizei os seguintes arquivos:
 
 | Arquivos          |
@@ -63,7 +63,7 @@ Os arquivos de Empresas e Estabelecimentos são particionados em vários arquivo
 O armazenamento do projeto usa o Data Lake Storage da Azure com os seguintes containers:
 - *configs*: armazena arquivos de configuração para auxiliar nas cargas.
 - *landing*: armazena os arquivos *zip* copiados do site do governo. A divisão de pastas mantem a mesma da origem (referência).
-- *bronze*: armazena os arquivos *csv* que foram transformados em *parquet* depois da descompactação.A divisão de pastas mantem a mesma da origem (referência).
+- *bronze*: armazena os arquivos *csv* que foram transformados em *parquet* depois da descompactação. A divisão de pastas mantem a mesma da origem (referência).
 - *silver*: armazena os dados das tabelas gerenciadas da camada *silver* com as limpezas dos dados necessárias para tender a demanda.
 - *gold*: armazena os dados das tabelas gerenciadas da camada *gold* com as agregações necessárias para tender a demanda.
 
@@ -72,28 +72,31 @@ O armazenamento do projeto usa o Data Lake Storage da Azure com os seguintes con
 
 Para realizar a ingestão foi utilizado o Azure Data Factory e projeto pode ser visualizado nesse [repositório](https://github.com/laismeuchi/dados-adf-base-cnpj).
 
-O primeiro *pipeline* faz a ingestão da fonte para o container *landind*  com as seguintes atividades:
-1. *set_variable_p_folder*: atividade do tipo *set variable* que atribui o nome da pasta que deve ser consultada no site do governo.
-2. *read_files_metadata*: atividade do tipo *lookup* que faz a leitura de um arquivo *xlsx* que indica quais arquivos devem ser lidos da pasta no site do governo.
-3. *filter_actives*: atividade do tipo *filter* que filtra somente os arquivos que estiverem indicados com status *active*. Assim eu podia fazer testes facilmente, inativando os arquivos que não queria processar naquele momento.
-4. *ForEach1*: atividade do tipo *for each* que itera sobre os nomes dos arquivos a serem lidos, executando as seguintes atividades para cada arquivo:
-    - *copy_http_to_landing*: atividade do tipo *copy data* que copia o arquivo do site do governo para o conateiner *landing* no Azure Data Lake Storage.
-    - *unzip_files*: atividade do tipo *copy data* que copia o arquivo *zip*, descompacta ele e salva como *parquet* no container *bronze* no Azure Data Lake Storage.
+O primeiro *pipeline* atribui a uma variável o nome da pasta que deve ser lida na fonte, em seguida faz a leitura de um arquivo de metadados onde estão elencados os arquivos disponíveis no site do governo e indica quais devem ser lidos (status = active).
+
+A atividade de filtro remove os arquivos que não devem ser lidos. Essa configuração facilita os testes pois permite deixar só os arquivos desejados para consulta.
+
+![image](https://github.com/user-attachments/assets/af1adb83-9d5c-4a11-9eb1-8bad0bcd8361)
+
+Em seguida, para cada arquivo identificado é feita a ingestão dos dados da fonte para o container *landing* e na atividade seguinte é feita a descompactação dos arquivos *zip*, transforma em *parquet* e salva no container *bronze*.
+
+![pipe_copy_files](https://github.com/user-attachments/assets/f24c2c42-eadc-43da-be2d-e3414368ad72)
+
 
 # Transformação
 
 As transformações foram feitas em *noteboobks* no Databricks e que foram colocados em um segundo *pipeline* no Azure Data Factory para ser realizada a orquestração da execução.
+Os *notebooks* foram separados em 2 etapas:
+1. *bronze_to_silver*: nessa etapa os dados são transportados da camada *bronze* para *silver* realizando as limpezas necessárias e adição de informações de controle. Também foram criadas algumas tabelas que tem valores fixos (porte_empresa, situacao_cadastral, tipo_mudanca). O código dessa etapa pode ver consultado [aqui](https://github.com/laismeuchi/dados-databricks-base-cnpj/tree/main/bronze_to_silver).
+2. *gold*: nessa etapa os dados são transportados da camada *silver* para *gold* realizando as agregações necessárias para atender as demandas do usuário final. Também foram criadas algumas dimensões que serão utilizadas para compor o modelo *star schema* a ser utilizado no Power BI. O código dessa etapa pode ver consultado [aqui](https://github.com/laismeuchi/dados-databricks-base-cnpj/tree/main/gold)
 
-O segundo *pipeline* utilizada as seguintes atividades: 
-1. *set_variable_p_folder*: atividade do tipo *set variable* que indica o parâmetro "referencia" que deve ser passado para a execução dos *notebooks*.
-2. *Databricks*: atividade do tipo *Databricks* que permite a execução de *notebooks* que estão no *workspace* do Databricks. Foram criadas as seguintes atividades:
-    - *bronze_to_silver*: executa o *notebook* [_executar_todos](https://github.com/laismeuchi/dados-databricks-base-cnpj/blob/main/bronze_to_silver/_executar_todos.py) que recebe a referência como parâmtero e executa os demais que copiam os dados da *bronze* para a *silver*.
-    - *gold_dimensoes_fixas*: executa o *notebook* [dimensoes_fixas](https://github.com/laismeuchi/dados-databricks-base-cnpj/blob/main/gold/dimensoes_fixas.py) que carrega as informações das dimensões fixas(dim_municipios, dim_natureza_juridica, dim_porte_empresa, dim_situacao_cadastral e dim_tipo_mudanca) da camada *silver* para *gold*.
-    - *fato_abertura_empresa*: executa o *notebook* [fato_abertura_empresa](https://github.com/laismeuchi/dados-databricks-base-cnpj/blob/main/gold/fato_abertura_empresa.py) que agrupa os dados das tabelas relacionadas para registrar as empresas abertas salvando os registros na camada *gold*.
-    - *fato_abertura_mudanca_endereco*: executa o *notebook* [fato_abertura_mudanca_endereco](https://github.com/laismeuchi/dados-databricks-base-cnpj/blob/main/gold/fato_mudanca_endereco.py) que agrupa os dados das tabelas relacionadas para registrar as mudanças de endereço das empresas salvando os registros na camada *gold*.
-    - *fato_situacao_cadastral*: executa o *notebook* [fato_situacao_cadastral](https://github.com/laismeuchi/dados-databricks-base-cnpj/blob/main/gold/fato_situacao_cadastral.py) que agrupa os dados das tabelas relacionadas para registrar as mudanças de situação cadastral das empresas salvando os registros na camada *gold*.
-    
-Posteriomente, pode ser adicionado uma nova lógica a esse projeto que faz a consulta das pastas disponíveis no site do governo, verifica quais ainda não foram importadas para o Data Lake e faz a importação automaticamente conforme agendamento. Assim não será necessário a passagem de parâmetro manual da referencia para execução.
+Em ambas as etapas, para cada entidade foi criada uma tabela gerenciada no formato *Delta* no Databricks.
+
+O segundo *pipeline* do projeto, faz a orquestração dos *notebooks* do Databricks, assim eles executam na ordem correta.
+
+![pipe_orchestrate_notebooks](https://github.com/user-attachments/assets/1bee8df4-4d78-4c1f-8aa7-31d66d04ba8e)
+
+Posteriormente, pode ser adicionado uma nova lógica a esse projeto que faz a consulta das pastas disponíveis no site do governo, verifica quais ainda não foram importadas para o Data Lake e faz a importação automaticamente conforme agendamento. Assim não será necessário a passagem de parâmetro manual da referencia para execução.
 
 
 # Visualização
