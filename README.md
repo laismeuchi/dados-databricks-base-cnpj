@@ -101,6 +101,12 @@ Posteriormente, pode ser adicionado uma nova lógica a esse projeto que faz a co
 
 # Visualização
 
+Em breve!
+
 # Análise dos Dados
 
+Em breve!
+
 # Custo
+
+Em breve!
