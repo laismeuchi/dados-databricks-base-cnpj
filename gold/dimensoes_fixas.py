@@ -21,6 +21,21 @@
 # COMMAND ----------
 
 # MAGIC %sql
+# MAGIC create or replace table gold.dim_cnaes(
+# MAGIC   codigo_cnae STRING,
+# MAGIC   descricao_cnae STRING
+# MAGIC )
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC
+# MAGIC insert into gold.dim_cnaes
+# MAGIC select * from silver.cnaes
+
+# COMMAND ----------
+
+# MAGIC %sql
 # MAGIC create or replace table gold.dim_natureza_juridica(
 # MAGIC   codigo_natureza_juridica STRING,
 # MAGIC   descricao_natureza_juridica STRING
