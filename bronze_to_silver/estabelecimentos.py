@@ -19,8 +19,8 @@ dbutils.widgets.text("file_num", "")
 
 # COMMAND ----------
 
-from pyspark.sql.types import StructType, StructField, StringType, IntegerType, DoubleType
-from pyspark.sql.functions import lit, col
+from pyspark.sql.types import StructType, StructField, StringType, IntegerType, DoubleType, DateType
+from pyspark.sql.functions import lit, col, to_date
 
 # COMMAND ----------
 
@@ -40,11 +40,11 @@ columns = {"Prop_0": "cnpj_basico",
            "Prop_3": "identificador_matriz_filial",
            "Prop_4": "nome_fantasia",
            "Prop_5": "codigo_situacao_cadastral",
-           "Prop_6": "data_situacao_cadastral",
+           "Prop_6": "data_situacao_cadastral_string",
            "Prop_7": "motivo_situacao_cadastral",
            "Prop_8": "nome_cidade_exterior",
            "Prop_9": "codigo_pais",
-           "Prop_10": "data_inicio_atividade",
+           "Prop_10": "data_inicio_atividade_string",
            "Prop_11": "codigo_cnae_primario",
            "Prop_12": "codigo_cnae_secundario",
            "Prop_13": "tipo_logradouro",
@@ -63,7 +63,7 @@ columns = {"Prop_0": "cnpj_basico",
            "Prop_26": "fax",
            "Prop_27": "email",
            "Prop_28": "situacao_especial",
-           "Prop_29": "data_situacao_especial"
+           "Prop_29": "data_situacao_especial_string"
            	}
 
 # COMMAND ----------
@@ -78,8 +78,11 @@ estabelecimentos_df = (spark.read.parquet(estabelecimentos_path)
                .withColumnsRenamed(columns)
                .withColumn("reference", lit(reference))
                .withColumn("file_num", lit(file_num))
+               .withColumn("data_situacao_cadastral", to_date(col("data_situacao_cadastral_string"), "yyyyMMdd"))
+               .withColumn("data_inicio_atividade", to_date(col("data_inicio_atividade_string"), "yyyyMMdd"))
+               .withColumn("data_situacao_especial", to_date(col("data_situacao_especial_string"), "yyyyMMdd"))
                .filter(col("uf").rlike(regex_pattern_string))
-)
+            ).drop("data_situacao_cadastral_string","data_inicio_atividade_string")
 
 # COMMAND ----------
 
@@ -107,6 +110,15 @@ dbutils.notebook.exit("Success")
 # COMMAND ----------
 
 # MAGIC %sql
+# MAGIC -- select *
+# MAGIC -- from silver.estabelecimentos
+# MAGIC -- where year(data_inicio_atividade) = 1109
 # MAGIC
-# MAGIC -- delete from silver.estabelecimentos
-# MAGIC -- where not uf rlike '^[A-Za-z]+$'
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC
+# MAGIC -- select year(data_inicio_atividade), count(1) 
+# MAGIC -- from silver.estabelecimentos
+# MAGIC -- group by all
