@@ -160,4 +160,19 @@ Caso queira fazer sua própria análise o paniel pode ser acessado [aqui](https:
 
 # Custo
 
-Em breve!
+O projeto todo foi desenvolvido no ambiente Azure em minha conta pessoal que está configurada para *Pay as you go*, ou seja, pago que foi utilizado durante o período do *billing*.
+Os recursos utilizados foram os listados a seguir, e todos alocados na região East US:
+1. Storage Account: StorageV2 (general purpose v2) do tipo *Standard*, com replicação do tipo local(LRS) e com o Data Lake Storage ativado.
+2. Azure Data Factory: Data factory (V2)
+3. Key Vault: Key Vault do tipo do tipo *Standard*
+4. Databricks: Azure Databricks Service com *Pricing Tier Premium*, utilizando os 14 dias de DBUs grátis.
+
+Nessas configurações o custo total foi de R$ 85,97 distribuídos conforme figura abaixo:
+
+![image](https://github.com/user-attachments/assets/c65c4762-bad4-4638-921a-b0f2ccb4f6ff)
+
+Para verificar o custo que seria cobrado do Databricks fiz o seguinte cáculo:
+
+
+
+
