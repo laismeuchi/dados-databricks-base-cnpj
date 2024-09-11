@@ -1,4 +1,3 @@
-# Tratamento da base de CNPJ's da Receita Federal
 Olá!
 
 Nesse projeto proponho uma solução de engenharia de dados realizando o processamento da base de CNPJ's das empresas do Brasil disponibilizada pela [Receita Federal](https://dados.gov.br/dados/conjuntos-dados/cadastro-nacional-da-pessoa-juridica---cnpj) para atender a demanda de um usuário final que deseje avaliar alguns aspectos referentes à esses dados.
@@ -99,13 +98,65 @@ O segundo *pipeline* do projeto, faz a orquestração dos *notebooks* do Databri
 Posteriormente, pode ser adicionado uma nova lógica a esse projeto que faz a consulta das pastas disponíveis no site do governo, verifica quais ainda não foram importadas para o Data Lake e faz a importação automaticamente conforme agendamento. Assim não será necessário a passagem de parâmetro manual da referencia para execução.
 
 
-# Visualização
+# Visualização 
 
-Em breve!
+A entrega dos dados foi feita em um painel do Power BI que conecta no *database gold* do Databricks que pode ser visualizado [aqui](https://app.powerbi.com/view?r=eyJrIjoiZTMxZTk5Y2YtNThiZC00ZDU2LWJmMjMtMTAyMzVlYjM0ODRiIiwidCI6IjE2NTVhODRhLTgxZTQtNDlkNy1hNTJlLWU0YWMxYmFkZmRmMyJ9) e pode ter seu arquivo baixado [aqui](https://github.com/laismeuchi/dados-powerbi-base-cnpj).
+O painel possui 3 abas com os filtros solicitados na demanda inicial:
+1. Alterações de Status
+2. Alteração de Endereço
+3. Abertura de Empresas
+
+Na aba Alterações de Status é possível verificar as quantidades de empresas por status e como os valores evoluíram ao longo das disponibilizações da Receita Federal.
+
+Também é possível verificar a quantidade de empresas por CNAE, Natureza Jurídica, Porte e Situação Cadastral selecionando o tipo de visão desejado.
+
+![image](https://github.com/user-attachments/assets/f1f9b068-fdcf-4cc9-9c38-e9cfbfe0fb3a)
+
+Na aba Alteração de Endereço é possível verificar as quantidades de empresas que mudaram de endereço, tanto as que mudaram de Estado quanto as que mudaram de Cidade, e como os valores evoluíram ao longo das disponibilizações da Receita Federal.
+
+Também é possível verifica a quantidade de empresas por CNAE, Natureza Jurídica, Porte e Situação Cadastral selecionando o tipo de visão desejado.
+
+![image](https://github.com/user-attachments/assets/e01302df-bd44-4a79-b7c1-64dbcce792ff)
+
+
+Na aba Abertura de Empresas é possível verificar as quantidades de empresas abertas ao longo dos anos.
+
+Também é possível verifica a quantidade de empresas por CNAE, Natureza Jurídica, Porte e Situação Cadastral selecionando o tipo de visão desejado.
+
+![image](https://github.com/user-attachments/assets/9ce5ef24-0cf6-4a06-8963-7fe22f31415d)
+
 
 # Análise dos Dados
 
-Em breve!
+Aqui apresento alguns *insigths* que verifiquei na análise dos dados com base na referência dos dados disponibilizados em agosto de 2024.
+
+🏆 Os 3 principais CNAE's de empresas ativas no Brasil são: 
+- 👚 4781400 - Comércio varejista de artigos do vestuário e acessórios que representa as lojas de roupas.
+- 💇 9602501 - Cabeleireiros, manicure e pedicure que representa os salões de beleza
+- 🤑 7319002 - Promoção de vendas  que representa os vendedores.
+
+![image](https://github.com/user-attachments/assets/75acedf1-fd48-4370-835a-45c5292d6d10)
+
+🗺️ A maior quantidade de mudança de empresas acontece entre os estados de São Paulo e Minas Gerais, onde saíram 319 empresas de São Paulo para Minas Gerais e saíram 287 empresas de Minas Gerais para São Paulo.
+
+📍 E a maior parte das mudanças são da cidade de São Paulo para Belo Horizonte nos CNAEs de 7319002 - Promoção de vendas, 4781400 - Comércio varejista de artigos do vestuário e acessórios e 8219999 - Preparação de documentos e serviços especializados de apoio administrativo não especificados anteriormente.
+
+![image](https://github.com/user-attachments/assets/4d107fe0-a1e2-492d-98ba-f33539c451fd)
+
+🏙️ Já quando verificamos a mudança entre cidades, a maioria ocorre entre Guarulhos pra São Paulo, onde saíram 130 empresas de Guarulhos para São Paulo e 114 saíram de São Paulo para Guarulhos.
+
+![image](https://github.com/user-attachments/assets/6b9185a9-d559-4936-b61d-eb42fdf63131)
+
+🏢 A maior quantidade de empresas abertas no Brasil foi em 2021, em que foram abertas 4.138.020 empresas, onde a maioria foram no estado de São Paulo, Minas Gerais e Rio de Janeiro.
+
+🏆 Os CNAE's campeões foram:
+- 🥇 4781400 - Comércio varejista de artigos do vestuário e acessórios
+- 🥈 7319002 - Promoção de vendas
+- 🥉 9492800 - Atividades de organizações políticas
+
+![image](https://github.com/user-attachments/assets/9309cfc2-547a-49bd-a714-62f65c78bf10)
+
+Caso queira fazer sua própria análise o paniel pode ser acessado [aqui](https://app.powerbi.com/view?r=eyJrIjoiZTMxZTk5Y2YtNThiZC00ZDU2LWJmMjMtMTAyMzVlYjM0ODRiIiwidCI6IjE2NTVhODRhLTgxZTQtNDlkNy1hNTJlLWU0YWMxYmFkZmRmMyJ9).
 
 # Custo
 
