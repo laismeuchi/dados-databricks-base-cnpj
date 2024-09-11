@@ -165,14 +165,21 @@ Os recursos utilizados foram os listados a seguir, e todos alocados na região E
 1. Storage Account: StorageV2 (general purpose v2) do tipo *Standard*, com replicação do tipo local(LRS) e com o Data Lake Storage ativado.
 2. Azure Data Factory: Data factory (V2)
 3. Key Vault: Key Vault do tipo do tipo *Standard*
-4. Databricks: Azure Databricks Service com *Pricing Tier Premium*, utilizando os 14 dias de DBUs grátis.
+4. Databricks: Azure Databricks Service com *Pricing Tier Premium*, com um cluster que gastaria 1-3 DBU/h.
 
-Nessas configurações o custo total foi de R$ 85,97 distribuídos conforme figura abaixo:
+Nessas configurações o custo total foi de R$ 147,99 distribuídos conforme figura abaixo:
 
-![image](https://github.com/user-attachments/assets/c65c4762-bad4-4638-921a-b0f2ccb4f6ff)
+![image](https://github.com/user-attachments/assets/359ea836-68a6-414b-98c8-b9a54ede28d8)
 
-Para verificar o custo que seria cobrado do Databricks fiz o seguinte cáculo:
+O custo de DBUs do Databricks não estão nesse custo pois utilizei os 14 dias de DBUs grátis que é oferecido para teste, porém os custos de VM e Storage dele ainda são cobrados pela *cloud* conforme visto acima. 
 
+Para calcular o que seria cobrado a mais do Databricks fiz uma consulta na tabela de *usage* do banco de *billing* e o valor foi aproximadamente USD 20,20 convertendo para BRL com a cotação de 1 USD = 5.5265 BRL, daria R$ 111,64.
 
+![image](https://github.com/user-attachments/assets/1755302e-12ae-454d-ba1d-1d19ff5fd725)
 
+Ao final o processo todo teria um custo de aproximadamente R$ 259,63.
 
+Porém nesse valor está a execução de uma consulta de 4 disponibilizações da Receita Federal que pode ser considerada uma carga inicial.
+Em uma execução da disponibilização mais recente esse custo seria reduzido.
+
+Pensando na experiência que adquiri fazendo esse projeto do zero, acho que o custo benefício foi muito vantajoso pois aprendi várias nuances de um projeto de dados que poderei aplicar na prática.
