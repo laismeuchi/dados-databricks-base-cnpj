@@ -100,7 +100,7 @@ Posteriormente, pode ser adicionado uma nova lógica a esse projeto que faz a co
 
 # Visualização 
 
-A entrega dos dados foi feita em um painel do Power BI que conecta no *database gold* do Databricks que pode ser visualizado [aqui](https://app.powerbi.com/view?r=eyJrIjoiZTMxZTk5Y2YtNThiZC00ZDU2LWJmMjMtMTAyMzVlYjM0ODRiIiwidCI6IjE2NTVhODRhLTgxZTQtNDlkNy1hNTJlLWU0YWMxYmFkZmRmMyJ9) e pode ter seu arquivo baixado [aqui](https://github.com/laismeuchi/dados-powerbi-base-cnpj).
+A entrega dos dados foi feita em um painel do Power BI que conecta no *database gold* do Databricks que pode ser visualizado [aqui](https://app.powerbi.com/view?r=eyJrIjoiZTZhZGZiYTYtZTZhYS00YjFiLThhMWEtZDgwZDQwMzRiY2E0IiwidCI6IjE2NTVhODRhLTgxZTQtNDlkNy1hNTJlLWU0YWMxYmFkZmRmMyJ9) e pode ter seu arquivo baixado [aqui](https://github.com/laismeuchi/dados-powerbi-base-cnpj).
 O painel possui 3 abas com os filtros solicitados na demanda inicial:
 1. Alterações de Status
 2. Alteração de Endereço
@@ -156,7 +156,7 @@ Aqui apresento alguns *insigths* que verifiquei na análise dos dados com base n
 
 ![image](https://github.com/user-attachments/assets/9309cfc2-547a-49bd-a714-62f65c78bf10)
 
-Caso queira fazer sua própria análise o paniel pode ser acessado [aqui](https://app.powerbi.com/view?r=eyJrIjoiZTMxZTk5Y2YtNThiZC00ZDU2LWJmMjMtMTAyMzVlYjM0ODRiIiwidCI6IjE2NTVhODRhLTgxZTQtNDlkNy1hNTJlLWU0YWMxYmFkZmRmMyJ9).
+Caso queira fazer sua própria análise o paniel pode ser acessado [aqui](https://app.powerbi.com/view?r=eyJrIjoiZTZhZGZiYTYtZTZhYS00YjFiLThhMWEtZDgwZDQwMzRiY2E0IiwidCI6IjE2NTVhODRhLTgxZTQtNDlkNy1hNTJlLWU0YWMxYmFkZmRmMyJ9).
 
 # Custo
 
