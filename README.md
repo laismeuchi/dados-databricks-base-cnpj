@@ -4,6 +4,8 @@ Nesse projeto proponho uma solução de engenharia de dados realizando o process
 
 Nas seções abaixo apresento mais detalhes dos requisitos e as soluções utilizadas.
 
+:us: To see the english version you can access [here](https://github.com/laismeuchi/dados-databricks-base-cnpj/blob/main/README_EN.md)
+
 # Demanda
 
 Para o desenvolvimento do projeto, considere a seguinte lista de demandas que o usuário final elencou que precisaria para suas análises:
